@@ -1,0 +1,24 @@
+{
+  "name": "web-crawler",
+  "version": "0.0.1",
+  "type": "module",
+  "logging": false,
+  "description": "This is an example of a Crawlee project.",
+  "dependencies": {
+    "@webscraperio/api-client-nodejs": "^1.1.0",
+    "apify": "^3.2.3",
+    "apify-client": "^2.9.3",
+    "axios": "^1.7.2",
+    "crawlee": "^3.11.1",
+    "dotenv": "^16.4.5",
+    "playwright": "^1.46.0",
+    "uuid": "^10.0.0"
+  },
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "echo \"Error: oops, the actor has no tests yet, sad!\" && exit 1",
+    "postinstall": "npx crawlee install-playwright-browsers"
+  },
+  "author": "It's not you it's me",
+  "license": "ISC"
+}

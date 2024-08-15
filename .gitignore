@@ -1,0 +1,23 @@
+# This file tells Git which files shouldn't be added to source control
+
+.idea
+dist
+apify_storage
+crawlee_storage
+storage
+.env
+
+# Added by Apify CLI
+.venv
+
+# calgary
+/calgary/node_modules
+
+# seattle
+/seattle/node_modules
+
+# vancouver
+/vancouver/node_modules
+
+# victoria
+/victoria/node_modules
