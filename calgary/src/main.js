@@ -23,7 +23,7 @@ const crawler = new PlaywrightCrawler({
   },
 });
 
-await crawler.run(["https://www.autotrader.ca/"]);
+await crawler.run(["https://www.maseratiofalberta.com/"]);
 
 // this will be useful for the scheduled actor..
 // await removeDuplicatesFromDataset(dataset);

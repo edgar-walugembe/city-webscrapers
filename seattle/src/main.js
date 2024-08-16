@@ -15,7 +15,7 @@ log.setLevel(log.LEVELS.DEBUG);
 log.debug("Setting up crawler.");
 
 //Initialize a default dataset where data wil be stored
-const dataset = await Dataset.open(process.env.DATASET_NAME_AUTOTRADER);
+const dataset = await Dataset.open(process.env.DATASET_NAME_SEATTLE);
 
 const crawler = new PlaywrightCrawler({
   requestHandler: async ({ request, page, log, enqueueLinks }) => {
@@ -23,7 +23,7 @@ const crawler = new PlaywrightCrawler({
   },
 });
 
-await crawler.run(["https://www.autotrader.ca/"]);
+await crawler.run(["https://www.maseratiofseattle.com/"]);
 
 // this will be useful for the scheduled actor..
 // await removeDuplicatesFromDataset(dataset);

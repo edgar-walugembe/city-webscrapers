@@ -5,13 +5,23 @@ import dotenv from "dotenv";
 dotenv.config();
 export const router = createPlaywrightRouter();
 
-// /**** Scrapping Autotrader Website ****/
+// /**** Scrapping maseratiCalgary Website ****/
 router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   //when in the detail page
   log.debug(`Extracting data: ${request.url}`);
 
-  const urlParts = request.url.split("/");
-  const carManufacturer = urlParts[4] || "Not Available";
+  const urlPath = new URL(request.url).pathname;
+
+  const carRegex = /\/vehicle\/(\d{4})-(\w+)-(\w+)-/;
+  const carMatch = urlPath.match(carRegex);
+
+  const year = carMatch ? carMatch[1] : "Year Not Found";
+  const make = carMatch ? carMatch[2] : "Make Not Found";
+  const model = carMatch ? carMatch[3] : "Model Not Found";
+
+  console.log(`Year: ${year}`);
+  console.log(`Make: ${make}`);
+  console.log(`Model: ${model}`);
 
   //Car Name
   const carNameWithTrim =
@@ -104,7 +114,7 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   const carDetails = {
     car_url: request.url,
     car_id: uuidv4(),
-    carManufacturer,
+    carMake,
     carName,
     carYear,
     carImage,
@@ -128,54 +138,31 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
 
   await dataset.pushData(carDetails);
 
-  // this will be useful for the scheduled actor..
-
-  // const existingData = await dataset.getData();
-  // const isDuplicate = existingData.items.some(
-  //   (item) => item.url === carDetails.url
-  // );
-
-  // if (!isDuplicate) {
-  //   await dataset.pushData(carDetails);
-  //   console.log(carDetails);
-  // } else {
-  //   log.debug(`Duplicate data found: ${request.url}`);
-  // }
-
   console.log(carDetails);
 });
 
 router.addHandler("CATEGORY", async ({ page, enqueueLinks, request, log }) => {
-  //when in the bodyType page
+  //when in the new cars page
   log.debug(`Enqueueing pagination for: ${request.url}`);
 
-  const productSelector = ".dealer-split-wrapper > a";
-  const nextPageSelector = "a.last-page-link";
+  const carSelector = ".item.active > a";
 
-  await page.waitForSelector(productSelector);
+  await page.waitForSelector(carSelector);
   await enqueueLinks({
-    selector: productSelector,
+    selector: carSelector,
     label: "DETAIL",
   });
-
-  const nextButton = await page.$(nextPageSelector);
-  if (nextButton) {
-    await enqueueLinks({
-      selector: nextPageSelector,
-      label: "CATEGORY",
-    });
-  }
 });
 
 router.addDefaultHandler(async ({ request, page, enqueueLinks, log }) => {
   log.debug(`Enqueueing categories from page: ${request.url}`);
 
-  const linkableSelector = ".bodyTypeItem";
+  const newCarSelector = ".menu-item-2308 > a";
 
-  await page.waitForSelector(linkableSelector);
+  await page.waitForSelector(newCarSelector);
 
   await enqueueLinks({
-    selector: linkableSelector,
+    selector: newCarSelector,
     label: "CATEGORY",
   });
 });
