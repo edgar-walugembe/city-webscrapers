@@ -33,12 +33,15 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
     "No Year Found";
 
   //car Location
-  const Location = "Vancouver";
+  const Location = "Seattle";
 
   //Car Price
   const carPrice =
-    (await page.locator(".priceBlocItemPriceValue").textContent()) ||
-    "Not Available";
+    (await page
+      .locator(
+        ".beforeLeadSubmission .priceBlockResponsiveDesktop span.priceBlocItemPriceValue.priceStakText--bold"
+      )
+      .textContent()) || "Not Available";
 
   const carDetails = {
     car_url: request.url,
