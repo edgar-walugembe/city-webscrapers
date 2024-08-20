@@ -10,7 +10,7 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   //when in the detail page
   log.debug(`Extracting data: ${request.url}`);
 
-  //Car Name
+  //Car Make and Model
   const carName =
     (await page.locator("span.vehicle-title__make-model").textContent()) ||
     "Not Available";
@@ -32,11 +32,11 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
     (await page.locator("span.vehicle-title__year").textContent()) ||
     "No Year Found";
 
-  //car Location
+  //Car Location
   const Location = "Seattle";
 
   //Car Price
-  const carPrice =
+  const Price =
     (await page
       .locator(
         ".beforeLeadSubmission .priceBlockResponsiveDesktop span.priceBlocItemPriceValue.priceStakText--bold"
@@ -50,7 +50,7 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
     Model,
     Year,
     Location,
-    carPrice,
+    Price,
   };
 
   log.debug(`Saving data: ${request.url}`);
