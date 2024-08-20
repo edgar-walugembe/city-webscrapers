@@ -15,37 +15,25 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   const carRegex = /\/vehicle\/(\d{4})-(\w+)-(\w+)-/;
   const carMatch = urlPath.match(carRegex);
 
-  const year = carMatch ? carMatch[1] : "Year Not Found";
-  const make = carMatch ? carMatch[2] : "Make Not Found";
-  const model = carMatch ? carMatch[3] : "Model Not Found";
+  const Make = carMatch ? carMatch[2] : "Make Not Found";
+  const Model = carMatch ? carMatch[3] : "Model Not Found";
+  const Year = carMatch ? carMatch[1] : "Year Not Found";
+
+  const Location = "Victoria";
 
   //Car Price
   const carPrice =
     (await page.locator("span#final-price").textContent()) || "Not Available";
 
   //Car Name
-  // const carNameWithTrim =
-  //   (await page.locator("h1.hero-title").textContent()) || "Not Available";
+  const carName =
+    (await page.locator("h1[itemprop='name']").textContent()) ||
+    "Not Available";
 
-  // const carTrim =
-  //   (await page.locator("span#spec-value-2").textContent()) || "Not Available";
-
-  // function getCarName(carNameWithTrim, carTrim) {
-  //   const trimIndex = carNameWithTrim.indexOf(carTrim);
-
-  //   if (trimIndex !== -1) {
-  //     return carNameWithTrim.substring(0, trimIndex).trim();
-  //   } else {
-  //     return carNameWithTrim;
-  //   }
-  // }
-
-  // const carName = getCarName(carNameWithTrim, carTrim);
-
-  // //Car Image
-  // const carImage =
-  //   (await page.locator("img#mainPhoto.loaded").getAttribute("src")) ||
-  //   "Not Available";
+  //Car Image
+  const carImage =
+    (await page.locator("img.stat-image-link").getAttribute("src")) ||
+    "Not Available";
 
   // //Other Images
   // await page.click("img#mainPhoto.loaded");
@@ -146,10 +134,13 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   const carDetails = {
     car_url: request.url,
     car_id: uuidv4(),
-    year,
-    make,
-    model,
+    Make,
+    Model,
+    Year,
+    Location,
+    carName,
     carPrice,
+    carImage,
   };
 
   log.debug(`Saving data: ${request.url}`);

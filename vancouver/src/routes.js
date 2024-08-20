@@ -16,9 +16,11 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   const carMatch = urlPath.match(carRegex);
 
   //Car Year, Make, and Model
-  const year = carMatch ? carMatch[1] : "Year Not Found";
-  const make = carMatch ? carMatch[2] : "Make Not Found";
-  const model = carMatch ? carMatch[3] : "Model Not Found";
+  const Make = carMatch ? carMatch[2] : "Make Not Found";
+  const Model = carMatch ? carMatch[3] : "Model Not Found";
+  const Year = carMatch ? carMatch[1] : "Year Not Found";
+
+  const Location = "Vancouver";
 
   //Car Price
   const carPrice =
@@ -27,9 +29,10 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   const carDetails = {
     car_url: request.url,
     car_id: uuidv4(),
-    year,
-    make,
-    model,
+    Make,
+    Model,
+    Year,
+    Location,
     carPrice,
   };
 
