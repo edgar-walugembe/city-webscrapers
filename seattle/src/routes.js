@@ -5,37 +5,38 @@ import dotenv from "dotenv";
 dotenv.config();
 export const router = createPlaywrightRouter();
 
-// /**** Scrapping Autotrader Website ****/
+// /**** Scrapping maseratiSeattle Website ****/
 router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   //when in the detail page
   log.debug(`Extracting data: ${request.url}`);
 
-  const urlParts = request.url.split("/");
-  const carManufacturer = urlParts[4] || "Not Available";
-
   //Car Name
-  const carNameWithTrim =
-    (await page.locator("h1.hero-title").textContent()) || "Not Available";
+  const carName =
+    (await page.locator("span.vehicle-title__make-model").textContent()) ||
+    "Not Available";
 
   const carTrim =
-    (await page.locator("span#spec-value-2").textContent()) || "Not Available";
+    (await page.locator("span.vehicle-title__trim").textContent()) ||
+    "Not Available";
 
-  function getCarName(carNameWithTrim, carTrim) {
-    const trimIndex = carNameWithTrim.indexOf(carTrim);
-
-    if (trimIndex !== -1) {
-      return carNameWithTrim.substring(0, trimIndex).trim();
-    } else {
-      return carNameWithTrim;
-    }
+  function getCarMakeAndModel(carName, carTrim) {
+    const [make, ...modelParts] = carName.split(" ");
+    const model = modelParts.join(" ") + " " + carTrim;
+    return { make, model };
   }
 
-  const carName = getCarName(carNameWithTrim, carTrim);
+  const { make: carMake, model: carModel } = getCarMakeAndModel(
+    carName,
+    carTrim
+  );
+
+  console.log(`${carMake}`);
+  console.log(`${carModel}`);
 
   //Car Year
-  const pattern = /\b\d{4}\b/;
-  const match = carName.match(pattern);
-  const carYear = match ? match[0] : "No Year Found";
+  const carYear =
+    (await page.locator("span.vehicle-title__year").textContent()) ||
+    "No Year Found";
 
   //Car Image
   const carImage =
@@ -149,33 +150,24 @@ router.addHandler("CATEGORY", async ({ page, enqueueLinks, request, log }) => {
   //when in the bodyType page
   log.debug(`Enqueueing pagination for: ${request.url}`);
 
-  const productSelector = ".dealer-split-wrapper > a";
-  const nextPageSelector = "a.last-page-link";
+  const carSelector = "a.hero-carousel__item--viewvehicle";
 
-  await page.waitForSelector(productSelector);
+  await page.waitForSelector(carSelector);
   await enqueueLinks({
-    selector: productSelector,
+    selector: carSelector,
     label: "DETAIL",
   });
-
-  const nextButton = await page.$(nextPageSelector);
-  if (nextButton) {
-    await enqueueLinks({
-      selector: nextPageSelector,
-      label: "CATEGORY",
-    });
-  }
 });
 
 router.addDefaultHandler(async ({ request, page, enqueueLinks, log }) => {
   log.debug(`Enqueueing categories from page: ${request.url}`);
 
-  const linkableSelector = ".bodyTypeItem";
+  // await page.click("a.newdropdown");
 
-  await page.waitForSelector(linkableSelector);
+  const newCarLink = "a#\\32 _child_1";
 
   await enqueueLinks({
-    selector: linkableSelector,
+    selector: newCarLink,
     label: "CATEGORY",
   });
 });

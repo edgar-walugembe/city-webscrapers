@@ -5,13 +5,23 @@ import dotenv from "dotenv";
 dotenv.config();
 export const router = createPlaywrightRouter();
 
-// /**** Scrapping Autotrader Website ****/
+// /**** Scrapping maseratiVancouver Website ****/
 router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   //when in the detail page
   log.debug(`Extracting data: ${request.url}`);
 
-  const urlParts = request.url.split("/");
-  const carManufacturer = urlParts[4] || "Not Available";
+  const urlPath = new URL(request.url).pathname;
+
+  const carRegex = /\/vehicle\/(\d{4})-(\w+)-(\w+)-/;
+  const carMatch = urlPath.match(carRegex);
+
+  const year = carMatch ? carMatch[1] : "Year Not Found";
+  const make = carMatch ? carMatch[2] : "Make Not Found";
+  const model = carMatch ? carMatch[3] : "Model Not Found";
+
+  console.log(`Year: ${year}`);
+  console.log(`Make: ${make}`);
+  console.log(`Model: ${model}`);
 
   //Car Name
   const carNameWithTrim =
@@ -149,33 +159,23 @@ router.addHandler("CATEGORY", async ({ page, enqueueLinks, request, log }) => {
   //when in the bodyType page
   log.debug(`Enqueueing pagination for: ${request.url}`);
 
-  const productSelector = ".dealer-split-wrapper > a";
-  const nextPageSelector = "a.last-page-link";
+  const carSelector = ".item.active > a";
 
-  await page.waitForSelector(productSelector);
+  await page.waitForSelector(carSelector);
   await enqueueLinks({
-    selector: productSelector,
+    selector: carSelector,
     label: "DETAIL",
   });
-
-  const nextButton = await page.$(nextPageSelector);
-  if (nextButton) {
-    await enqueueLinks({
-      selector: nextPageSelector,
-      label: "CATEGORY",
-    });
-  }
 });
 
 router.addDefaultHandler(async ({ request, page, enqueueLinks, log }) => {
   log.debug(`Enqueueing categories from page: ${request.url}`);
 
-  const linkableSelector = ".bodyTypeItem";
+  const newCarLink = ".menu-item-5260 > a";
 
-  await page.waitForSelector(linkableSelector);
-
+  await page.waitForSelector(newCarLink);
   await enqueueLinks({
-    selector: linkableSelector,
+    selector: newCarLink,
     label: "CATEGORY",
   });
 });
