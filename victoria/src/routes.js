@@ -23,11 +23,6 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   const carPrice =
     (await page.locator("span#final-price").textContent()) || "Not Available";
 
-  console.log(`Year: ${year}`);
-  console.log(`Make: ${make}`);
-  console.log(`Model: ${model}`);
-  console.log(`Price: ${carPrice}`);
-
   //Car Name
   // const carNameWithTrim =
   //   (await page.locator("h1.hero-title").textContent()) || "Not Available";
@@ -46,11 +41,6 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   // }
 
   // const carName = getCarName(carNameWithTrim, carTrim);
-
-  // //Car Year
-  // const pattern = /\b\d{4}\b/;
-  // const match = carName.match(pattern);
-  // const carYear = match ? match[0] : "No Year Found";
 
   // //Car Image
   // const carImage =
@@ -153,6 +143,19 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   // // }
 
   // console.log(carDetails);
+  const carDetails = {
+    car_url: request.url,
+    car_id: uuidv4(),
+    year,
+    make,
+    model,
+    carPrice,
+  };
+
+  log.debug(`Saving data: ${request.url}`);
+  await dataset.pushData(carDetails);
+
+  console.log(carDetails);
 });
 
 router.addHandler("CATEGORY", async ({ page, enqueueLinks, request, log }) => {
