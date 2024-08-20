@@ -15,15 +15,16 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   const carRegex = /\/vehicle\/(\d{4})-(\w+)-(\w+)-/;
   const carMatch = urlPath.match(carRegex);
 
-  //Car Year, Make, and Model
+  //Car Make, Model, and Year
   const Make = carMatch ? carMatch[2] : "Make Not Found";
   const Model = carMatch ? carMatch[3] : "Model Not Found";
   const Year = carMatch ? carMatch[1] : "Year Not Found";
 
+  //Car Location
   const Location = "Vancouver";
 
   //Car Price
-  const carPrice =
+  const Price =
     (await page.locator("span#final-price").textContent()) || "Not Available";
 
   const carDetails = {
@@ -33,7 +34,7 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
     Model,
     Year,
     Location,
-    carPrice,
+    Price,
   };
 
   log.debug(`Saving data: ${request.url}`);

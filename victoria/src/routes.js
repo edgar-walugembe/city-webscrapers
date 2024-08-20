@@ -15,25 +15,38 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   const carRegex = /\/vehicle\/(\d{4})-(\w+)-(\w+)-/;
   const carMatch = urlPath.match(carRegex);
 
+  //Car Make, Model, and Year
   const Make = carMatch ? carMatch[2] : "Make Not Found";
   const Model = carMatch ? carMatch[3] : "Model Not Found";
   const Year = carMatch ? carMatch[1] : "Year Not Found";
 
+  //Car Location
   const Location = "Victoria";
 
   //Car Price
-  const carPrice =
+  const Price =
     (await page.locator("span#final-price").textContent()) || "Not Available";
 
-  //Car Name
-  const carName =
-    (await page.locator("h1[itemprop='name']").textContent()) ||
-    "Not Available";
-
   //Car Image
-  const carImage =
+  const Image =
     (await page.locator("img.stat-image-link").getAttribute("src")) ||
     "Not Available";
+
+  const carDetails = {
+    car_url: request.url,
+    car_id: uuidv4(),
+    Make,
+    Model,
+    Year,
+    Location,
+    Price,
+    Image,
+  };
+
+  log.debug(`Saving data: ${request.url}`);
+  await dataset.pushData(carDetails);
+
+  console.log(carDetails);
 
   // //Other Images
   // await page.click("img#mainPhoto.loaded");
@@ -131,22 +144,6 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   // // }
 
   // console.log(carDetails);
-  const carDetails = {
-    car_url: request.url,
-    car_id: uuidv4(),
-    Make,
-    Model,
-    Year,
-    Location,
-    carName,
-    carPrice,
-    carImage,
-  };
-
-  log.debug(`Saving data: ${request.url}`);
-  await dataset.pushData(carDetails);
-
-  console.log(carDetails);
 });
 
 router.addHandler("CATEGORY", async ({ page, enqueueLinks, request, log }) => {
