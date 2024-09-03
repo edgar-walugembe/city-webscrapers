@@ -1,6 +1,6 @@
 {
   "actorSpecification": 1,
-  "name": "maserati_seattle-crawler",
+  "name": "maserati-seattle-crawler",
   "version": "1.0",
   "buildTag": "latest",
   "environmentVariables": {}

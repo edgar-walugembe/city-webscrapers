@@ -1,6 +1,6 @@
 {
   "actorSpecification": 1,
-  "name": "maserati_victoria-crawler",
+  "name": "maserati-victoria-crawler",
   "version": "1.0",
   "buildTag": "latest",
   "environmentVariables": {}

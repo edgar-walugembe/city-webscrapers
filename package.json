@@ -1,0 +1,11 @@
+{
+  "name": "city_scrapers",
+  "version": "1.0.0",
+  "description": "This is web scraper for scrapping websites that contain javascript rendered pages.\r It scraps the some details about the products listed on the website and stores the collected results in the datasets folder in json format.\r It is also hosted on apify",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "It's Me Not You",
+  "license": "ISC"
+}

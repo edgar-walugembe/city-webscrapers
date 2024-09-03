@@ -1,6 +1,6 @@
 {
   "actorSpecification": 1,
-  "name": "maserati_calgary-crawler",
+  "name": "maserati-calgary-crawler",
   "version": "1.0",
   "buildTag": "latest",
   "environmentVariables": {}
