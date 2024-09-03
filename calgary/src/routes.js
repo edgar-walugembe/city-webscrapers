@@ -25,8 +25,7 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
 
   //Car Price
   const Price =
-    (await page.locator(".pa-current-asking-price").textContent()) ||
-    "Not Available";
+    (await page.locator("span.english-price").textContent()) || "Not Available";
 
   const carDetails = {
     car_url: request.url,
