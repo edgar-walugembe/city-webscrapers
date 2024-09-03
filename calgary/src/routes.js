@@ -24,8 +24,10 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   const Location = "Calgary";
 
   //Car Price
-  const Price =
-    (await page.locator("span.english-price").textContent()) || "Not Available";
+  const price =
+    (await page.locator("span#final-price").textContent()) || "Not Available";
+
+  const Price = `$${price}`;
 
   const carDetails = {
     car_url: request.url,
