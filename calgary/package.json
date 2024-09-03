@@ -6,7 +6,7 @@
   "description": "This is an example of a Crawlee project.",
   "dependencies": {
     "@webscraperio/api-client-nodejs": "^1.1.0",
-    "apify": "^3.2.3",
+    "apify": "^3.2.5",
     "apify-client": "^2.9.3",
     "axios": "^1.7.2",
     "crawlee": "^3.11.1",
