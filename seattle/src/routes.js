@@ -50,7 +50,7 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
       .getAttribute("src")) || "Not Available";
 
   //Other Images
-  await page.click("#thumbnail--desktop--1 img.expand-btn");
+  await page.click("#thumbnail--desktop--0 img.thumbnail__image");
 
   await page.waitForSelector(".gallery-thumbnails img");
 
