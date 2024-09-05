@@ -15,7 +15,7 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
     (await page.locator("span.vehicle-title__make-model").textContent()) ||
     "Not Available";
 
-  const carTrim =
+  const Trim =
     (await page.locator("span.vehicle-title__trim").textContent()) ||
     "Not Available";
 
@@ -25,7 +25,7 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
     return { make, model };
   }
 
-  const { make: Make, model: Model } = getCarMakeAndModel(carName, carTrim);
+  const { make: Make, model: Model } = getCarMakeAndModel(carName, Trim);
 
   //Car Year
   const Year =
@@ -48,6 +48,7 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
     car_id: uuidv4(),
     Make,
     Model,
+    Trim,
     Year,
     Location,
     Price,
