@@ -24,144 +24,98 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   const Location = "Vancouver";
 
   //Car Price
-  const Price =
+  const price =
     (await page.locator("span#final-price").textContent()) || "Not Available";
+
+  const Price = `$${price}`;
+
+  //Car Image
+  const CoverImage =
+    (await page.locator("img[itemprop='image']").getAttribute("src")) ||
+    "Not Available";
+
+  //Other Images
+  await page.waitForSelector(".thumb img");
+
+  const otherCarImages = await page.$$eval(".thumb img", (imgs) =>
+    imgs.map((img) => img.src)
+  );
+
+  //Car Body Type
+  const BodyType =
+    (await page.locator("td[itemprop='bodyType']").textContent()) ||
+    "Not Available";
+
+  //Car Engine
+  const Engine =
+    (await page.locator("td[itemprop='vehicleEngine']").textContent()) ||
+    "Not Available";
+
+  //Car Mileage
+  const Mileage =
+    (await page.locator("td[itemprop='mileageFromOdometer']").textContent()) ||
+    "Not Available";
+
+  //Car Trim
+  const Trim =
+    (await page.locator("[itemprop='model'] span").textContent()) ||
+    "Not Available";
+
+  //Car Color
+  const ExteriorColor =
+    (await page.locator("td[itemprop='color']").textContent()) ||
+    "Not Available";
+
+  const InteriorColor =
+    (await page.locator("td[itemprop='vehicleInteriorColor']").textContent()) ||
+    "Not Available";
+
+  //Car DriveTrain
+  const Drivetrain =
+    (await page
+      .locator("div:nth-of-type(3) tr:nth-of-type(3) td.td-odd")
+      .textContent()) || "Not Available";
+
+  //Car Fuel Type
+  const FuelType =
+    (await page.locator("td[itemprop='fuelType']").textContent()) ||
+    "Not Available";
+
+  //Car Transmission
+  const Transmission =
+    (await page.locator("td[itemprop='vehicleTransmission']").textContent()) ||
+    "Not Available";
+
+  //Car Stock_Number
+  const Stock_Number =
+    (await page.locator("td[itemprop='sku']").textContent()) || "Not Available";
 
   const carDetails = {
     car_url: request.url,
     car_id: uuidv4(),
+    Location,
     Make,
     Model,
+    Trim,
+    Mileage,
+    BodyType,
     Year,
-    Location,
     Price,
+    ExteriorColor,
+    InteriorColor,
+    Transmission,
+    Drivetrain,
+    FuelType,
+    CoverImage,
+    otherCarImages,
+    Engine,
+    Stock_Number,
   };
 
   log.debug(`Saving data: ${request.url}`);
   await dataset.pushData(carDetails);
 
   console.log(carDetails);
-
-  //Car Name
-  // const carNameWithTrim =
-  //   (await page.locator("h1.hero-title").textContent()) || "Not Available";
-
-  // const carTrim =
-  //   (await page.locator("span#spec-value-2").textContent()) || "Not Available";
-
-  // function getCarName(carNameWithTrim, carTrim) {
-  //   const trimIndex = carNameWithTrim.indexOf(carTrim);
-
-  //   if (trimIndex !== -1) {
-  //     return carNameWithTrim.substring(0, trimIndex).trim();
-  //   } else {
-  //     return carNameWithTrim;
-  //   }
-  // }
-
-  // const carName = getCarName(carNameWithTrim, carTrim);
-
-  // //Car Image
-  // const carImage =
-  //   (await page.locator("img#mainPhoto.loaded").getAttribute("src")) ||
-  //   "Not Available";
-
-  // //Other Images
-  // await page.click("img#mainPhoto.loaded");
-
-  // await page.waitForSelector(".gallery-thumbnail img");
-
-  // const otherCarImages = await page.$$eval(".gallery-thumbnail img", (imgs) =>
-  //   imgs.map((img) => img.src)
-  // );
-
-  // //Car Condition
-  // const carStatus =
-  //   (await page.locator("span#spec-value-1").textContent()) || "Not Available";
-
-  // //Car Body Type
-  // const carBodyType =
-  //   (await page.locator("span#spec-value-3").textContent()) || "Not Available";
-
-  // //Car Engine
-  // const carEngine =
-  //   (await page.locator("span#spec-value-4").textContent()) || "Not Available";
-
-  // //Car DriveTrain
-  // const carDrivetrain =
-  //   (await page.locator("span#spec-value-7").textContent()) || "Not Available";
-
-  // //Car Mileage
-  // const carMileage =
-  //   (await page.locator(".ca-current-mileage").textContent()) ||
-  //   "Not Available";
-
-  // //Number of Car Doors
-  // const carDoors =
-  //   (await page.locator("span#spec-value-12").textContent()) || "Not Available";
-
-  // //Car Color
-  // const carExteriorColor =
-  //   (await page.locator("span#spec-value-9").textContent()) || "Not Available";
-
-  // const carInteriorColor =
-  //   (await page.locator("span#spec-value-10").textContent()) || "Not Available";
-
-  // //Car Fuel Type
-  // const carFuelType =
-  //   (await page.locator("span#spec-value-13").textContent()) || "Not Available";
-
-  // //Car Transmission
-  // const carTransmission =
-  //   (await page.locator("span#spec-value-6").textContent()) || "Not Available";
-
-  // //Car Description
-  // const carDescription =
-  //   (await page.locator("div#vdp-collapsible-short-text").textContent()) ||
-  //   "Not Available";
-
-  // const carDetails = {
-  //   car_url: request.url,
-  //   car_id: uuidv4(),
-  //   carManufacturer,
-  //   carName,
-  //   carYear,
-  //   carImage,
-  //   otherCarImages,
-  //   carStatus,
-  //   carMileage,
-  //   carPrice,
-  //   carBodyType,
-  //   carTrim,
-  //   carEngine,
-  //   carDrivetrain,
-  //   carDoors,
-  //   carExteriorColor,
-  //   carInteriorColor,
-  //   carFuelType,
-  //   carTransmission,
-  //   carDescription,
-  // };
-
-  // log.debug(`Saving data: ${request.url}`);
-
-  // await dataset.pushData(carDetails);
-
-  // // this will be useful for the scheduled actor..
-
-  // // const existingData = await dataset.getData();
-  // // const isDuplicate = existingData.items.some(
-  // //   (item) => item.url === carDetails.url
-  // // );
-
-  // // if (!isDuplicate) {
-  // //   await dataset.pushData(carDetails);
-  // //   console.log(carDetails);
-  // // } else {
-  // //   log.debug(`Duplicate data found: ${request.url}`);
-  // // }
-
-  // console.log(carDetails);
 });
 
 router.addHandler("CATEGORY", async ({ page, enqueueLinks, request, log }) => {
