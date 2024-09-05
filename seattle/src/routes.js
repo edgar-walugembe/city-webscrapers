@@ -43,13 +43,8 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
       )
       .textContent()) || "Not Available";
 
-  //Car Image
-  const CoverImage =
-    (await page
-      .locator("#thumbnail--desktop--0 img.thumbnail__image")
-      .getAttribute("src")) || "Not Available";
+  //Car Images
 
-  //Other Images
   await page.click("#thumbnail--desktop--0 img.thumbnail__image");
 
   await page.waitForSelector(".gallery-thumbnails img");
@@ -57,6 +52,9 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   const otherCarImages = await page.$$eval(".gallery-thumbnails img", (imgs) =>
     imgs.map((img) => img.src)
   );
+
+  //cover image
+  const CoverImage = otherCarImages[0];
 
   //Car Body Type
   const BodyType =
