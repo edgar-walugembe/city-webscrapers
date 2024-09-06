@@ -119,7 +119,7 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
 });
 
 router.addHandler("CATEGORY", async ({ page, enqueueLinks, request, log }) => {
-  //when in the bodyType page
+  //when in the new cars page
   log.debug(`Enqueueing pagination for: ${request.url}`);
 
   const carSelector = ".item.active > a";

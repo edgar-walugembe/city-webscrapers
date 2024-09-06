@@ -85,11 +85,6 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   const Stock_Number =
     (await page.locator("td[itemprop='sku']").textContent()) || "Not Available";
 
-  //Car Seats
-  // const Seats =
-  //   (await page
-  //     .locator("tr:contains('Total Seating Capacity') td.table-right-col")
-  //     .textContent()) || "Not Available";
 
   const carDetails = {
     car_url: request.url,
@@ -116,19 +111,6 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   await dataset.pushData(carDetails);
 
   console.log(carDetails);
-
-  // //Car Condition
-  // const carStatus =
-  //   (await page.locator("span#spec-value-1").textContent()) || "Not Available";
-
-  // //Car Mileage
-  // const carMileage =
-  //   (await page.locator(".ca-current-mileage").textContent()) ||
-  //   "Not Available";
-
-  // //Number of Car Doors
-  // const carDoors =
-  //   (await page.locator("span#spec-value-12").textContent()) || "Not Available";
 });
 
 router.addHandler("CATEGORY", async ({ page, enqueueLinks, request, log }) => {
