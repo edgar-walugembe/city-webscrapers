@@ -62,27 +62,24 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
       .locator(".info__item--body-style span.info__value")
       .textContent()) || "Not Available";
 
-  //Car Engine
-  const Engine =
-    (await page.locator("li:nth-of-type(17) span").textContent()) ||
-    "Not Available";
-
   //Car Color
   const ExteriorColor =
-    (await page
-      .locator(".info__item--exterior-color span.info__value")
-      .textContent()) || "Not Available";
+    (
+      await page
+        .locator(".info__item--exterior-color span.info__value")
+        .textContent()
+    )
+      ?.trim()
+      .replace(/\n+/g, " ") || "Not Available";
 
   const InteriorColor =
-    (await page
-      .locator(".info__item--interior-color span.info__value")
-      .textContent()) || "Not Available";
-
-  //Car DriveTrain
-  const Drivetrain =
-    (await page
-      .locator("li:nth-of-type(2) span.vehicle-highlights__label")
-      .textContent()) || "Not Available";
+    (
+      await page
+        .locator(".info__item--interior-color span.info__value")
+        .textContent()
+    )
+      ?.trim()
+      .replace(/\n+/g, " ") || "Not Available";
 
   //Car Fuel Type
   const FuelType =
@@ -125,11 +122,9 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
     ExteriorColor,
     InteriorColor,
     Transmission,
-    Drivetrain,
     FuelType,
     CoverImage,
     otherCarImages,
-    Engine,
     Stock_Number,
     VIN,
   };

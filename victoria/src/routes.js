@@ -97,7 +97,6 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
     Make,
     Model,
     Trim,
-    Mileage,
     BodyType,
     Year,
     Price,
