@@ -24,23 +24,93 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   const Location = "Victoria";
 
   //Car Price
-  const Price =
+  const price =
     (await page.locator("span#final-price").textContent()) || "Not Available";
 
+  const Price = `$${price}`;
+
   //Car Image
-  const Image =
-    (await page.locator("img.stat-image-link").getAttribute("src")) ||
+  const CoverImage =
+    (await page.locator("img[itemprop='image']").getAttribute("src")) ||
+    "Not Available";
+
+  //Other Images
+  await page.waitForSelector(".thumb img");
+
+  const otherCarImages = await page.$$eval(".thumb img", (imgs) =>
+    imgs.map((img) => img.src)
+  );
+
+  //Car Body Type
+  const BodyType =
+    (await page.locator("td[itemprop='bodyType']").textContent()) ||
+    "Not Available";
+
+  //Car Engine
+  const Engine =
+    (await page.locator("td[itemprop='vehicleEngine']").textContent()) ||
+    "Not Available";
+
+  //Car Trim
+  const Trim =
+    (await page.locator("[itemprop='model'] span").textContent()) ||
+    "Not Available";
+
+  //Car Color
+  const ExteriorColor =
+    (await page.locator("td[itemprop='color']").textContent()) ||
+    "Not Available";
+
+  const InteriorColor =
+    (await page.locator("td[itemprop='vehicleInteriorColor']").textContent()) ||
+    "Not Available";
+
+  //Car DriveTrain
+  const Drivetrain =
+    (await page
+      .locator("div:nth-of-type(3) tr:nth-of-type(3) td.td-odd")
+      .textContent()) || "Not Available";
+
+  //Car Fuel Type
+  const FuelType =
+    (await page.locator("td[itemprop='fuelType']").textContent()) ||
+    "Not Available";
+
+  //Car Transmission
+  const Transmission =
+    (await page.locator("td[itemprop='vehicleTransmission']").textContent()) ||
+    "Not Available";
+
+  //Car Stock_Number
+  const Stock_Number =
+    (await page.locator("td[itemprop='sku']").textContent()) || "Not Available";
+
+  //Car VIN
+  const VIN =
+    (await page.locator("td[itemprop='productID']").textContent()) ||
     "Not Available";
 
   const carDetails = {
     car_url: request.url,
     car_id: uuidv4(),
+    Location,
     Make,
     Model,
+    Trim,
+    Mileage,
+    BodyType,
     Year,
-    Location,
     Price,
-    Image,
+    ExteriorColor,
+    InteriorColor,
+    Transmission,
+    Drivetrain,
+    FuelType,
+    CoverImage,
+    otherCarImages,
+    Engine,
+    Stock_Number,
+    VIN,
   };
 
   log.debug(`Saving data: ${request.url}`);
