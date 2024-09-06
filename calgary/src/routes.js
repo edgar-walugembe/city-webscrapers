@@ -7,7 +7,7 @@ export const router = createPlaywrightRouter();
 
 // /**** Scrapping maseratiCalgary Website ****/
 router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
-  //when in the detail page
+  //when in the car details page
   log.debug(`Extracting data: ${request.url}`);
 
   const urlPath = new URL(request.url).pathname;
@@ -84,7 +84,6 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   //Car Stock_Number
   const Stock_Number =
     (await page.locator("td[itemprop='sku']").textContent()) || "Not Available";
-
 
   const carDetails = {
     car_url: request.url,

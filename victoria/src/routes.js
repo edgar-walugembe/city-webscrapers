@@ -7,7 +7,7 @@ export const router = createPlaywrightRouter();
 
 // /**** Scrapping maseratiVictoria Website ****/
 router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
-  //when in the detail page
+  //when in the car details page
   log.debug(`Extracting data: ${request.url}`);
 
   const urlPath = new URL(request.url).pathname;
