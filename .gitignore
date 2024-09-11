@@ -10,13 +10,15 @@ storage
 .venv
 
 # calgary
-/calgary/node_modules
+calgary/maserati-calgary/node_modules
 
 # seattle
-/seattle/node_modules
+seattle/maserati-seattle/node_modules
 
 # vancouver
-/vancouver/node_modules
+vancouver/maserati-vancouver/node_modules
+vancouver/autotrader-vancouver/node_modules
 
 # victoria
-/victoria/node_modules
+victoria/maserati-victoria/node_modules
+victoria/autotrader-victoria/node_modules
