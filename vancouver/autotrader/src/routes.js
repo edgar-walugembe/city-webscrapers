@@ -145,37 +145,27 @@ router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   console.log(carDetails);
 });
 
-router.addHandler("CATEGORY", async ({ page, enqueueLinks, request, log }) => {
-  //when in the bodyType page
-  log.debug(`Enqueueing pagination for: ${request.url}`);
+router.addDefaultHandler(
+  "CATEGORY",
+  async ({ request, page, enqueueLinks, log }) => {
+    log.debug(`Enqueueing car listings from page: ${request.url}`);
 
-  const productSelector = ".dealer-split-wrapper > a";
-  const nextPageSelector = "a.last-page-link";
+    const productSelector = ".dealer-split-wrapper > a";
+    const nextPageSelector = "a.last-page-link";
 
-  await page.waitForSelector(productSelector);
-  await enqueueLinks({
-    selector: productSelector,
-    label: "DETAIL",
-  });
+    await page.waitForSelector(productSelector);
 
-  const nextButton = await page.$(nextPageSelector);
-  if (nextButton) {
+    const nextButton = await page.$(nextPageSelector);
+    if (nextButton) {
+      await enqueueLinks({
+        selector: nextPageSelector,
+        label: "CATEGORY",
+      });
+    }
+
     await enqueueLinks({
-      selector: nextPageSelector,
-      label: "CATEGORY",
+      selector: linkableSelector,
+      label: "DETAIL",
     });
   }
-});
-
-router.addDefaultHandler(async ({ request, page, enqueueLinks, log }) => {
-  log.debug(`Enqueueing categories from page: ${request.url}`);
-
-  const linkableSelector = ".bodyTypeItem";
-
-  await page.waitForSelector(linkableSelector);
-
-  await enqueueLinks({
-    selector: linkableSelector,
-    label: "CATEGORY",
-  });
-});
+);
