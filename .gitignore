@@ -11,6 +11,7 @@ storage
 
 # calgary
 calgary/maserati-calgary/node_modules
+calgary/autotrader-calgary/node_modules
 
 # seattle
 seattle/maserati-seattle/node_modules
@@ -21,4 +22,3 @@ vancouver/autotrader-vancouver/node_modules
 
 # victoria
 victoria/maserati-victoria/node_modules
-victoria/autotrader-victoria/node_modules
