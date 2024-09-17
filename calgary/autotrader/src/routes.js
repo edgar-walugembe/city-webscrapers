@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 export const router = createPlaywrightRouter();
 
-// /**** Scrapping Autotrader Website ****/
+/**** Scrapping Autotrader Website ****/
 router.addHandler("DETAIL", async ({ request, page, log, dataset }) => {
   //when in the detail page
   log.debug(`Extracting data: ${request.url}`);
@@ -171,6 +171,7 @@ router.addDefaultHandler(async ({ request, page, enqueueLinks, log }) => {
   log.debug(`Enqueueing car listings for: ${request.url}`);
 
   const productSelector = ".dealer-split-wrapper > a";
+  const nextPageSelector = "a.last-page-link";
 
   await page.waitForSelector(productSelector);
 
@@ -178,4 +179,11 @@ router.addDefaultHandler(async ({ request, page, enqueueLinks, log }) => {
     selector: productSelector,
     label: "DETAIL",
   });
+
+  const nextButton = await page.$(nextPageSelector);
+  if (nextButton) {
+    await enqueueLinks({
+      selector: nextPageSelector,
+    });
+  }
 });
